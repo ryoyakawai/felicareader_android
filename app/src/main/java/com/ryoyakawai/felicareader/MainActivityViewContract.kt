@@ -10,6 +10,10 @@ interface MainActivityViewContract {
 
     fun updateMainContentText(text: String)
 
+    fun toggleNfcReaderState(mode: Boolean)
+
+    fun updateNfcIdm(text: String)
+
     fun handleOkButton(view: View)
 
     fun restCounter()
