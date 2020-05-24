@@ -196,12 +196,13 @@ class MainActivity : AppCompatActivity(), MainActivityViewContract, NfcAdapter.R
     override fun toggleNfcReaderState(mode: Boolean) {
         val nfcReaderOn: Button = findViewById(R.id.main_content_nfc_reader_on)
         val nfcReaderOff: Button = findViewById(R.id.main_content_nfc_reader_off)
+        val nfcIdmText: TextView = findViewById(R.id.main_content_nfc_idm)
 
         when(mode) {
             true -> {
+                nfcIdmText.text = "--"
                 nfcReaderOn.isEnabled = false
                 nfcReaderOff.isEnabled = true
-
             }
             false -> {
                 nfcReaderOn.isEnabled = true
@@ -211,8 +212,8 @@ class MainActivity : AppCompatActivity(), MainActivityViewContract, NfcAdapter.R
     }
 
     override fun updateNfcIdm(text: String) {
-        val messageView: TextView = findViewById(R.id.main_content_nfc_idm)
-        messageView.text = text
+        val nfcIdmText: TextView = findViewById(R.id.main_content_nfc_idm)
+        nfcIdmText.text = text
     }
 
     override fun updateMainContentText(text: String) {
