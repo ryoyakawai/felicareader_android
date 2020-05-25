@@ -16,8 +16,6 @@ interface MainActivityViewContract {
 
     fun handleOkButton(view: View)
 
-    fun restCounter()
-
     fun handleSuccess(result: Array<SinglePostResponse>)
 
     fun handleError(message: String)

@@ -24,7 +24,7 @@ import java.util.*
 class MainActivity : AppCompatActivity(), MainActivityViewContract, NfcAdapter.ReaderCallback {
 
     private var mPresenter: MainActivityPresenterContract? = null
-    private var counter: Int = 0
+    private var idmText_default: String = "--"
     private val tTAG = "ryoyakawai_falicareader"
     private val reqCodeWriteExternalStorage = 123
     private var permissionGrantedBehavior: ((activity: MainActivity) -> Unit) = {}
@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity(), MainActivityViewContract, NfcAdapter.R
         // toggle button
         toggleNfcReaderState(false)
 
-        nfcIdmText.text = "--"
+        nfcIdmText.text = idmText_default
 
         // event listener for making ReaderOn
         nfcReaderOn.setOnClickListener { view ->
@@ -85,9 +85,8 @@ class MainActivity : AppCompatActivity(), MainActivityViewContract, NfcAdapter.R
         }
         // ^^^ nfc ^^^
 
-
-        val emailFab: FloatingActionButton = findViewById(R.id.email_fab)
-        emailFab.setOnClickListener { view ->
+        val permissionSampleFab: FloatingActionButton = findViewById(R.id.permission_sample_fab)
+        permissionSampleFab.setOnClickListener { view ->
 
             this.requestWriteExtStoragePermission(
                 Manifest.permission.WRITE_EXTERNAL_STORAGE, reqCodeWriteExternalStorage)
@@ -115,9 +114,6 @@ class MainActivity : AppCompatActivity(), MainActivityViewContract, NfcAdapter.R
 
             }
 
-            this.counter += 1
-            updateMainContentText(this.counter.toString())
-
             handleOkButton(view)
         }
     }
@@ -134,9 +130,8 @@ class MainActivity : AppCompatActivity(), MainActivityViewContract, NfcAdapter.R
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_reset_counter -> {
-                restCounter()
-                updateMainContentText(this.counter.toString())
+            R.id.action_reset_idm_text -> {
+                updateNfcIdm(idmText_default)
                 true
             }
             else -> {
@@ -200,7 +195,7 @@ class MainActivity : AppCompatActivity(), MainActivityViewContract, NfcAdapter.R
 
         when(mode) {
             true -> {
-                nfcIdmText.text = "--"
+                nfcIdmText.text = idmText_default
                 nfcReaderOn.isEnabled = false
                 nfcReaderOff.isEnabled = true
             }
@@ -222,12 +217,8 @@ class MainActivity : AppCompatActivity(), MainActivityViewContract, NfcAdapter.R
     }
 
     override fun handleOkButton(view: View) {
-        Snackbar.make(view, "Tapped ${this.counter} times.", Snackbar.LENGTH_SHORT)
+        Snackbar.make(view, "Permission Sample", Snackbar.LENGTH_SHORT)
             .setAction("Action", null).show()
-    }
-
-    override fun restCounter() {
-        this.counter = 0
     }
 
     override fun handleSuccess(result: Array<SinglePostResponse>) {

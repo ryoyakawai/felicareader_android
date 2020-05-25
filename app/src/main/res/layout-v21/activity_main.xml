@@ -27,19 +27,20 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end">
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/email_fab"
+                android:id="@+id/permission_sample_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@android:color/transparent" app:useCompatPadding="true"/>
 
         <TextView
+                android:id="@+id/increment_fab_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="+"
                 android:elevation="16dp"
-                android:textColor="@android:color/white"
-                android:textAppearance="?android:attr/textAppearanceMedium" android:id="@+id/increment_fab_text"/>
+                android:text="○"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/white" />
     </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
