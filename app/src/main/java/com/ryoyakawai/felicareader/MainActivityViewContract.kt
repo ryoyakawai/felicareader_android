@@ -1,12 +1,10 @@
 package com.ryoyakawai.felicareader
 
-import android.view.Menu
-import android.view.View
+
 import com.ryoyakawai.felicareader.api.response.SinglePostResponse
+import com.ryoyakawai.felicareader.felicalibs.ReaderViewContract
 
-interface MainActivityViewContract {
-
-    fun createFloatMenu(id: Int, menu: Menu)
+interface MainActivityViewContract : ReaderViewContract {
 
     fun updateMainContentText(text: String)
 
@@ -14,7 +12,7 @@ interface MainActivityViewContract {
 
     fun updateNfcIdm(text: String)
 
-    fun handleOkButton(view: View)
+    fun handleOkButton()
 
     fun handleSuccess(result: Array<SinglePostResponse>)
 
