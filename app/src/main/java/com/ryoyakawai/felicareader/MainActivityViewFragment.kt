@@ -111,14 +111,8 @@ class MainActivityViewFragment : Fragment(), MainActivityViewContract,  NfcAdapt
 
         //get idm
         val idm: ByteArray = tag.id
-
-        // bytesToHexString()
-        val sb = StringBuilder()
-        val formatter = Formatter(sb)
-        for (b in idm) {
-            formatter.format("%02x", b)
-        }
-        val idmString: String = sb.toString().toUpperCase(Locale.getDefault())
+        val idmString: String? = this.bytesToHexString(idm)
+        //val idmString: String = idmString.toString().toUpperCase(Locale.getDefault())
 
         //idm取るだけじゃなくてread,writeしたい場合はtag利用してごにょごにょする
         activity?.runOnUiThread {
@@ -126,7 +120,18 @@ class MainActivityViewFragment : Fragment(), MainActivityViewContract,  NfcAdapt
         }
     }
 
-    override fun updateNfcIdm(text: String) {
+    private fun bytesToHexString(bytes: ByteArray): String? {
+        val sb = java.lang.StringBuilder()
+        val formatter = Formatter(sb)
+        for (b in bytes) {
+            formatter.format("%02x", b)
+        }
+        return sb.toString().toUpperCase(Locale.getDefault())
+    }
+
+    override fun updateNfcIdm(_text: String?) {
+        var text: String? = _text
+        if(text == null) text = this.idmText_default
         this.nfcIdmText.text = text
         Log.d(tTAG, "idm=[$text]")
     }

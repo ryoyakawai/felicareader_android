@@ -10,7 +10,7 @@ interface MainActivityViewContract : ReaderViewContract {
 
     fun toggleNfcReaderState(mode: Boolean)
 
-    fun updateNfcIdm(text: String)
+    fun updateNfcIdm(text: String?)
 
     fun handleOkButton()
 
