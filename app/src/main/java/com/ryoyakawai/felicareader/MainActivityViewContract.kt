@@ -2,9 +2,8 @@ package com.ryoyakawai.felicareader
 
 
 import com.ryoyakawai.felicareader.api.response.SinglePostResponse
-import com.ryoyakawai.felicareader.felicalibs.ReaderViewContract
 
-interface MainActivityViewContract : ReaderViewContract {
+interface MainActivityViewContract {
 
     fun updateMainContentText(text: String)
 

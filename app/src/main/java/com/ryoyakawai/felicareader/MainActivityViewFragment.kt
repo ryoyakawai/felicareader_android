@@ -14,6 +14,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.ryoyakawai.felicareader.api.response.SinglePostResponse
+import com.ryoyakawai.felicareader.felicalibs.BasicTagInfo
+import com.ryoyakawai.felicareader.felicalibs.FelicaLibsReader
 import java.util.*
 
 class MainActivityViewFragment : Fragment(), MainActivityViewContract,  NfcAdapter.ReaderCallback {
@@ -27,13 +29,13 @@ class MainActivityViewFragment : Fragment(), MainActivityViewContract,  NfcAdapt
     private lateinit var nfcReaderOff: Button
     private lateinit var nfcIdmText: TextView
 
+    private val felicaclibsreader = FelicaLibsReader()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d(tTAG, "fragment: 🙆‍♀️ 🙆‍♂️‍")
-
         this.mView = inflater.inflate(R.layout.content_main, container, false)
         this.nfcReaderOn = this.mView.findViewById(R.id.main_content_nfc_reader_on)
         this.nfcReaderOff = this.mView.findViewById(R.id.main_content_nfc_reader_off)
@@ -109,10 +111,24 @@ class MainActivityViewFragment : Fragment(), MainActivityViewContract,  NfcAdapt
     override fun onTagDiscovered(tag: Tag) {
         Log.d(tTAG, "Tag discoverd.")
 
-        //get idm
-        val idm: ByteArray = tag.id
-        val idmString: String? = this.bytesToHexString(idm)
-        //val idmString: String = idmString.toString().toUpperCase(Locale.getDefault())
+        val tagInfo: BasicTagInfo = felicaclibsreader.getBasicInformation(tag)
+        val idmString = felicaclibsreader.bytesToHexString(tagInfo.idm)
+        Log.d(tTAG, "idm=[$idmString]")
+
+        val midString = felicaclibsreader.bytesToHexString(tagInfo.mid)
+        Log.d(tTAG, "mid=[$midString]")
+
+        val pmmString = felicaclibsreader.bytesToHexString(tagInfo.pmm)
+        Log.d(tTAG, "pmm=[$pmmString]")
+
+        val systemCodeString = felicaclibsreader.bytesToHexString(tagInfo.systemCode)
+        Log.d(tTAG, "systemCode=[$systemCodeString]")
+
+        // service code suica 固定
+        val serviceCode = byteArrayOf(0x09.toByte(), 0x0f.toByte())
+        val response = felicaclibsreader.getBasicInfo00(tagInfo.idm, serviceCode, 10)
+        val responseString = felicaclibsreader.bytesToHexString(response)
+        Log.d(tTAG, "polling_response=[$responseString]")
 
         //idm取るだけじゃなくてread,writeしたい場合はtag利用してごにょごにょする
         activity?.runOnUiThread {
@@ -120,20 +136,10 @@ class MainActivityViewFragment : Fragment(), MainActivityViewContract,  NfcAdapt
         }
     }
 
-    private fun bytesToHexString(bytes: ByteArray): String? {
-        val sb = java.lang.StringBuilder()
-        val formatter = Formatter(sb)
-        for (b in bytes) {
-            formatter.format("%02x", b)
-        }
-        return sb.toString().toUpperCase(Locale.getDefault())
-    }
-
     override fun updateNfcIdm(_text: String?) {
         var text: String? = _text
         if(text == null) text = this.idmText_default
         this.nfcIdmText.text = text
-        Log.d(tTAG, "idm=[$text]")
     }
 
     override fun updateMainContentText(text: String) {
