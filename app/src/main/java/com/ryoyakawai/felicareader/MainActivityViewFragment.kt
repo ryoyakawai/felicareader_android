@@ -16,7 +16,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.ryoyakawai.felicareader.api.response.SinglePostResponse
 import com.ryoyakawai.felicareader.felicalibs.BasicTagInfo
 import com.ryoyakawai.felicareader.felicalibs.FelicaLibsReader
-import java.util.*
 
 class MainActivityViewFragment : Fragment(), MainActivityViewContract,  NfcAdapter.ReaderCallback {
 
