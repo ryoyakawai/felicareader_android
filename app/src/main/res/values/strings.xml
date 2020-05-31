@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Felica Reader</string>
     <string name="action_reset_idm_text">Clear Idm</string>
+    <string name="read_id">Read ID ...</string>
 </resources>

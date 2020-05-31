@@ -24,7 +24,7 @@
             android:id="@+id/main_content_nfc_idm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Read ID ..."
+            android:text="@string/read_id"
             android:layout_marginTop="400px"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
