@@ -61,7 +61,7 @@ class FelicaLibsReader {
         }
         (0 until arrayAllHistory.size).forEach { i ->
             val oneRecordString = this.bytesToHexString(arrayAllHistory[i])
-            Log.d(tTAG, "OneRecord=[$oneRecordString]")
+            Log.d(tTAG, "#$i OneRecord=[$oneRecordString]")
         }
         return arrayAllHistory
     }
