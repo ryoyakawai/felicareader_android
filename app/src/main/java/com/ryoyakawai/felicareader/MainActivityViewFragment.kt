@@ -125,11 +125,10 @@ class MainActivityViewFragment : Fragment(), MainActivityViewContract,  NfcAdapt
 
         // service code suica 固定
         val serviceCode = byteArrayOf(0x09.toByte(), 0x0f.toByte())
-        val response = felicaclibsreader.getBasicInfo00(tagInfo.idm, serviceCode, 10)
-        val responseString = felicaclibsreader.bytesToHexString(response)
-        Log.d(tTAG, "polling_response=[$responseString]")
+        val response = felicaclibsreader.getAllTransactionHistory(tagInfo.idm, serviceCode)
+        //val responseString = felicaclibsreader.bytesToHexString(response)
+        //Log.d(tTAG, "polling_response=[$responseString]")
 
-        //idm取るだけじゃなくてread,writeしたい場合はtag利用してごにょごにょする
         activity?.runOnUiThread {
             this.updateNfcIdm(idmString)
         }
