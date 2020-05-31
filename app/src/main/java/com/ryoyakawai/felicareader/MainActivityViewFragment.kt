@@ -12,10 +12,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+
 import com.google.android.material.snackbar.Snackbar
 import com.ryoyakawai.felicareader.api.response.SinglePostResponse
 import com.ryoyakawai.felicareader.felicalibs.BasicTagInfo
 import com.ryoyakawai.felicareader.felicalibs.FelicaLibsReader
+import com.ryoyakawai.felicareader.historyview_fragment.HistoryViewFragment
 
 class MainActivityViewFragment : Fragment(), MainActivityViewContract,  NfcAdapter.ReaderCallback {
 
@@ -35,7 +37,7 @@ class MainActivityViewFragment : Fragment(), MainActivityViewContract,  NfcAdapt
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        this.mView = inflater.inflate(R.layout.content_main, container, false)
+        this.mView = inflater.inflate(R.layout.activity_main_view, container, false)
         this.nfcReaderOn = this.mView.findViewById(R.id.main_content_nfc_reader_on)
         this.nfcReaderOff = this.mView.findViewById(R.id.main_content_nfc_reader_off)
         this.nfcIdmText = mView.findViewById(R.id.main_content_nfc_idm)
@@ -65,7 +67,6 @@ class MainActivityViewFragment : Fragment(), MainActivityViewContract,  NfcAdapt
 
         this.nfcReaderOff.setOnClickListener { view ->
             toggleNfcReaderState(false)
-
             nfcAdapter.disableReaderMode(this.context as Activity?);
         }
 
@@ -125,9 +126,23 @@ class MainActivityViewFragment : Fragment(), MainActivityViewContract,  NfcAdapt
 
         // service code suica 固定
         val serviceCode = byteArrayOf(0x09.toByte(), 0x0f.toByte())
-        val response = felicaclibsreader.getAllTransactionHistory(tagInfo.idm, serviceCode)
-        //val responseString = felicaclibsreader.bytesToHexString(response)
-        //Log.d(tTAG, "polling_response=[$responseString]")
+        val arrayAllHistory = felicaclibsreader.getAllTransactionHistory(tagInfo.idm, serviceCode)
+        val responseString = felicaclibsreader.bytesToHexString(arrayAllHistory[0])
+        Log.d(tTAG, "polling_response=[$responseString]")
+
+        // Fragment を移動
+        val mHistoryViewFragment = HistoryViewFragment()
+        val fragmentManager = fragmentManager
+        if (fragmentManager != null) {
+            val bundle = Bundle()
+            bundle.putSerializable("arrayAllHistory", arrayAllHistory)
+            mHistoryViewFragment.arguments = bundle;
+
+            val transaction = fragmentManager?.beginTransaction()
+            transaction.replace(R.id.fragment_container, mHistoryViewFragment);
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
 
         activity?.runOnUiThread {
             this.updateNfcIdm(idmString)
